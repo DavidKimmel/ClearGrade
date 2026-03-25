@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClearGrade Admin Notification</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f4f7; font-family:Arial, Helvetica, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f7; padding:24px 0;">
+    <tr>
+      <td align="center">
+        <table width="560" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border-radius:8px; overflow:hidden;">
+          <!-- Header -->
+          <tr>
+            <td style="background-color:#1a1a2e; padding:20px 24px;">
+              <h1 style="margin:0; color:#ffffff; font-size:20px;">ClearGrade &mdash; Audit {{ job.status | capitalize }}</h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:24px;">
+              <p style="margin:0 0 16px; color:#333333; font-size:15px; line-height:1.5;">
+                An audit job has finished with status:
+                <strong style="color:{% if job.status == 'completed' %}#28a745{% else %}#dc3545{% endif %};">
+                  {{ job.status | upper }}
+                </strong>
+              </p>
+
+              <table width="100%" cellpadding="6" cellspacing="0" style="font-size:14px; color:#333333; border-collapse:collapse;">
+                <tr>
+                  <td style="padding:6px 0; font-weight:bold; width:140px;">Business</td>
+                  <td style="padding:6px 0;">{{ job.business_name }}</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px 0; font-weight:bold;">Website</td>
+                  <td style="padding:6px 0;">
+                    <a href="{{ job.website_url }}" style="color:#1a73e8;">{{ job.website_url }}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:6px 0; font-weight:bold;">Industry</td>
+                  <td style="padding:6px 0;">{{ job.industry }}</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px 0; font-weight:bold;">Contact</td>
+                  <td style="padding:6px 0;">{{ job.contact_name }} &lt;{{ job.email }}&gt;</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px 0; font-weight:bold;">Timestamp</td>
+                  <td style="padding:6px 0;">{{ job.created_at }}</td>
+                </tr>
+              </table>
+
+              {% if job.status == 'completed' and job.dashboard_url %}
+              <p style="margin:24px 0 0; font-size:14px; color:#333333;">
+                <strong>Dashboard:</strong>
+                <a href="{{ job.dashboard_url }}" style="color:#1a73e8;">{{ job.dashboard_url }}</a>
+              </p>
+              {% endif %}
+
+              {% if job.status == 'failed' and job.error_log %}
+              <p style="margin:24px 0 8px; font-size:14px; font-weight:bold; color:#dc3545;">Error Log:</p>
+              <pre style="background-color:#f8f9fa; border:1px solid #dee2e6; border-radius:4px; padding:12px; font-size:13px; color:#333333; white-space:pre-wrap; word-break:break-word; max-height:300px; overflow:auto;">{{ job.error_log }}</pre>
+              {% endif %}
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#f4f4f7; padding:16px 24px; font-size:12px; color:#999999; text-align:center;">
+              ClearGrade Admin Notification &bull; This is an automated message.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

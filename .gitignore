@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# Environment
+.env
+
+# Database
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code
+.claude/
+
+# Generated audits (tracked separately)
+audits/*/
+!audits/.gitkeep
+CLEARGRADE_ARCHITECTURE.md
+CLEARGRADE_CLAUDE_CODE_PROMPT.md
