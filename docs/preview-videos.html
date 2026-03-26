@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClearGrade — Video Comparison</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0f1a; color: #f0f2f5; font-family: sans-serif; padding: 24px; }
+    h2 { margin-bottom: 12px; font-size: 14px; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.1em; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .card { border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; overflow: hidden; }
+    .card p { padding: 12px; font-size: 13px; color: #8b95a8; }
+    video { width: 100%; display: block; }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="card">
+      <h2 style="padding:12px 12px 0;">Video 1 (1.3MB)</h2>
+      <video autoplay muted loop playsinline src="assets/hero-video-1.mp4"></video>
+      <p>EEmZf0X8sdBfg_0GMlQ66_l22rn9MC.mp4</p>
+    </div>
+    <div class="card">
+      <h2 style="padding:12px 12px 0;">Video 2 (2.4MB)</h2>
+      <video autoplay muted loop playsinline src="assets/hero-video-2.mp4"></video>
+      <p>njLTPoNZaY3syUPVQNGCR_96750213a5104363a5ae49b47985f7c4.mp4</p>
+    </div>
+  </div>
+</body>
+</html>
