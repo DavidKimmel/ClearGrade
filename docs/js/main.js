@@ -114,6 +114,8 @@
     gradeEl.textContent = d.grade; gradeEl.style.color = sc(d.score);
     document.getElementById('biz-name').textContent = d.name;
     document.getElementById('biz-desc').textContent = d.desc;
+
+    // Update report link dynamically based on active tab
     var link = document.getElementById('prev-link');
     link.href = d.link;
     link.textContent = 'See the full ' + d.name.split(' ')[0] + ' report \u2192';
@@ -165,6 +167,25 @@
       });
     }, { threshold: .15 });
     obs.observe(card);
+  }
+
+  /* --- FAQ Accordion --- */
+  function initFaq() {
+    var items = document.querySelectorAll('.faq-item');
+    items.forEach(function (item) {
+      var btn = item.querySelector('.faq-q');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var isOpen = item.classList.contains('open');
+        // Close all other items
+        items.forEach(function (other) { other.classList.remove('open'); other.querySelector('.faq-q').setAttribute('aria-expanded', 'false'); });
+        // Toggle clicked item
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
   }
 
   /* --- Form --- */
@@ -290,6 +311,7 @@
     initHeroVideo();
     initSteps();
     initPreview();
+    initFaq();
     initForm();
     initSticky();
   });
