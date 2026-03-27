@@ -542,20 +542,36 @@ section { position: relative; z-index: 1; }
   display: grid; grid-template-columns: repeat(3,1fr);
   gap: 24px; margin-top: 36px; position: relative;
 }
-/* Animated progress line */
+/* Animated progress line — two segments that gap around each circle */
+.steps::before, .steps::after {
+  content: ''; position: absolute; top: 31px; height: 2px;
+}
+/* Segment 1: step 1 circle edge → step 2 circle edge */
 .steps::before {
-  content: ''; position: absolute; top: 32px;
-  left: calc(16.67% + 16px); right: calc(16.67% + 16px);
-  height: 2px; background: rgba(56,189,248,.1);
+  left: calc(16.67% + 36px); right: calc(50% + 36px);
+  background: rgba(56,189,248,.1);
 }
+/* Segment 2: step 2 circle edge → step 3 circle edge */
 .steps::after {
-  content: ''; position: absolute; top: 32px;
-  left: calc(16.67% + 16px); right: calc(16.67% + 16px);
-  height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent));
-  transform: scaleX(0); transform-origin: left;
-  transition: transform 1.5s cubic-bezier(.4,0,.2,1);
+  left: calc(50% + 36px); right: calc(16.67% + 36px);
+  background: rgba(56,189,248,.1);
 }
-.steps.line-animate::after { transform: scaleX(1); }
+/* Animated overlays on each segment */
+.step-line-1, .step-line-2 {
+  position: absolute; top: 31px; height: 2px;
+  background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 1s cubic-bezier(.4,0,.2,1);
+}
+.step-line-1 {
+  left: calc(16.67% + 36px); right: calc(50% + 36px);
+}
+.step-line-2 {
+  left: calc(50% + 36px); right: calc(16.67% + 36px);
+  transition-delay: .6s;
+}
+.steps.line-animate .step-line-1,
+.steps.line-animate .step-line-2 { transform: scaleX(1); }
 
 .step { text-align: center; position: relative; }
 .step-num {
@@ -869,7 +885,7 @@ section { position: relative; z-index: 1; }
   .del-grid { grid-template-columns: 1fr; }
   .who-grid { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: 1fr; gap: 32px; }
-  .steps::before, .steps::after, .steps.line-animate::after { display: none; }
+  .steps::before, .steps::after, .step-line-1, .step-line-2 { display: none; }
   .qw-grid { grid-template-columns: 1fr; }
   .gauge-row { flex-direction: column; text-align: center; }
   .dim-label { width: 120px; font-size: .78rem; }
