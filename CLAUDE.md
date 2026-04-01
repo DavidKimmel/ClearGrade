@@ -11,10 +11,92 @@ AI-powered marketing audit service for small businesses.
 ## Audit Generation
 
 ### Running an Audit
-Use `/market audit` to generate a full marketing audit. Each audit runs
-5 parallel analysis agents (content, conversion, competitive, SEO, brand/strategy),
-then assembles the deliverables. Always generate the PDF executive summary
-via the `market-report-pdf` skill as the final step.
+Use `/market audit` to generate a full marketing audit. The pipeline is:
+
+1. **Phase 1 — Discovery**: WebFetch homepage + key pages for raw HTML
+2. **Phase 2 — Browser Pre-Flight Scan** (CRITICAL): Use Chrome browser
+   automation to capture JS-rendered content WebFetch misses
+3. **Phase 3 — Parallel Analysis**: Launch 5 agents with BOTH WebFetch
+   data AND browser enrichment data
+4. **Phase 4 — Assembly**: Compile reports, generate PDF via `market-report-pdf`
+
+### Browser Pre-Flight Enrichment (MANDATORY)
+
+**Why:** WebFetch only returns initial HTML before JavaScript executes.
+Review widgets (Fera, Judge.me, Yotpo, Stamped, Loox), popup offers,
+Instagram embeds, star ratings, and lazy-loaded content are invisible
+to WebFetch. This caused critical errors in early audits (reporting
+"zero reviews" when a site had 112 reviews).
+
+**Rule: Never report "zero reviews" or "no social proof" based on
+WebFetch alone. Browser enrichment data always takes precedence.**
+
+**Scan sequence** (~30 seconds, 8 browser tool calls):
+
+```
+1. Navigate to homepage, wait for JS widgets to load
+2. Execute extraction JavaScript (reviews, popups, social, trust signals)
+3. Get full rendered page text via get_page_text
+4. Navigate to one product page, repeat extraction
+5. Navigate to about page, get rendered text
+6. Compile browser_enrichment JSON payload
+```
+
+**What to extract per page:**
+
+| Category | What to Look For |
+|---|---|
+| Reviews & Ratings | Widget containers (Fera, Judge.me, Yotpo, Stamped, Loox, Okendo), star elements, review count, average rating, sample review text |
+| Popups & Modals | Email capture, discount offers, exit-intent, cookie consent. Check elements with `position:fixed`, `z-index>100` |
+| Social Feeds | Instagram/TikTok embeds, UGC galleries, social proof notifications |
+| Trust Signals | Badge images, certification logos, payment icons |
+| Lazy Content | Scroll page to trigger lazy loads before extraction |
+
+**JavaScript extraction selectors** (platform-agnostic):
+```javascript
+// Reviews
+'.fera-widget, .jdgm-widget, .yotpo, .stamped-container,
+ .loox-reviews, .okeReviews, .spr-container,
+ [data-reviews], [data-review-count], [class*="review"]'
+
+// Star ratings
+'[class*="star"], [class*="rating"], [data-rating]'
+
+// Popups
+'[class*="popup"], [class*="modal"], .privy-popup,
+ .klaviyo-form, .omnisend-form, .justuno'
+
+// Social
+'[class*="instagram"], [class*="tiktok"],
+ iframe[src*="instagram"], .fomo-notification'
+
+// Trust
+'img[src*="trust"], img[src*="badge"], img[src*="secure"]'
+```
+
+**Output format** — pass this JSON to all 5 agents:
+```json
+{
+  "browser_enrichment": {
+    "reviews": {
+      "platform": "fera",
+      "count": 112,
+      "avg_rating": 5.0,
+      "locations": ["homepage", "product_pages"],
+      "sample_reviews": ["..."]
+    },
+    "popups": [{"type": "email_capture", "incentive": "10% off"}],
+    "social_feeds": {"instagram_embed": true, "tiktok_embed": false},
+    "trust_signals": {"badges": [], "payment_icons": ["visa","mastercard"]},
+    "rendered_text": {"homepage": "...", "product": "...", "about": "..."}
+  }
+}
+```
+
+**Agent injection**: When passing context to each of the 5 parallel agents,
+prepend: "BROWSER-VERIFIED DATA: The following was gathered by a browser
+that executes JavaScript and supersedes any WebFetch findings for reviews,
+ratings, popups, social feeds, and trust signals."
 
 ### Audit Directory Structure
 ```
