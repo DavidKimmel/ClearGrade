@@ -1,10 +1,20 @@
-"""Run a ClearGrade audit via the Claude Code CLI."""
+"""Run a ClearGrade audit via the Claude Code CLI.
+
+Audit output is organised by business slug with timestamped run directories:
+
+    audits/
+    └── joes-plumbing/
+        ├── latest/          ← symlink → 2026-03-29/
+        ├── 2026-03-29/
+        └── 2026-02-15/
+"""
 
 from __future__ import annotations
 
 import logging
 import os
 import subprocess
+from datetime import datetime, timezone
 from typing import Any, TypedDict
 
 logger = logging.getLogger(__name__)
@@ -20,7 +30,36 @@ class AuditResult(TypedDict):
     error: str | None
 
 
-def _build_command(job: dict[str, Any]) -> list[str]:
+def _ensure_output_dir(slug: str) -> tuple[str, str]:
+    """Create the timestamped output directory for this run.
+
+    Returns (run_dir, date_stamp) where run_dir is the full path to the
+    new timestamped directory (e.g. audits/joes-plumbing/2026-03-29/).
+    """
+    date_stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    business_dir = os.path.join(AUDIT_OUTPUT_DIR, slug)
+    run_dir = os.path.join(business_dir, date_stamp)
+    os.makedirs(run_dir, exist_ok=True)
+    return run_dir, date_stamp
+
+
+def _update_latest_symlink(slug: str, date_stamp: str) -> None:
+    """Point the ``latest`` symlink to the most recent run directory."""
+    business_dir = os.path.join(AUDIT_OUTPUT_DIR, slug)
+    latest_link = os.path.join(business_dir, "latest")
+
+    # Remove existing symlink or directory named 'latest'
+    if os.path.islink(latest_link):
+        os.remove(latest_link)
+    elif os.path.isdir(latest_link):
+        os.remove(latest_link)
+
+    # Relative symlink so it works regardless of mount path
+    os.symlink(date_stamp, latest_link)
+    logger.info("Updated latest symlink: %s → %s", latest_link, date_stamp)
+
+
+def _build_command(job: dict[str, Any], run_dir: str) -> list[str]:
     """Construct the Claude Code CLI command for an audit.
 
     # -----------------------------------------------------------------------
@@ -29,20 +68,16 @@ def _build_command(job: dict[str, Any]) -> list[str]:
     #   - Which prompt template / system prompt file to pass
     #   - Which model flags (--model, --max-tokens) are appropriate
     #   - Whether we should stream output or run in batch mode
-    #   - How the output directory structure maps to the dashboard URL
     #   - Whether additional env vars (API keys, etc.) must be forwarded
     #
     # For now, this constructs a *plausible* invocation that should be
     # reviewed and adjusted once the prompt and output format are finalised.
     # -----------------------------------------------------------------------
     """
-    slug: str = job["slug"]
-    output_dir: str = os.path.join(AUDIT_OUTPUT_DIR, slug)
-
     return [
         CLAUDE_CODE_PATH,
         "--print",
-        "--output-dir", output_dir,
+        "--output-dir", run_dir,
         "--business-name", job["business_name"],
         "--website-url", job["website_url"],
         "--industry", job["industry"],
@@ -52,17 +87,22 @@ def _build_command(job: dict[str, Any]) -> list[str]:
 def run_audit(job: dict[str, Any]) -> AuditResult:
     """Execute the audit subprocess and return a result dict.
 
+    Creates a timestamped subdirectory under ``audits/<slug>/`` and updates
+    the ``latest`` symlink on success.
+
     Returns an immutable-style ``AuditResult`` dict with:
       - ``success``: whether the audit completed without error
       - ``dashboard_url``: public URL of the generated dashboard (on success)
       - ``error``: captured stderr / exception message (on failure)
     """
     slug: str = job["slug"]
-    command = _build_command(job)
+    run_dir, date_stamp = _ensure_output_dir(slug)
+    command = _build_command(job, run_dir)
     domain: str = os.environ.get("CLEARGRADE_DOMAIN", "https://cleargrade.co")
-    dashboard_url: str = f"{domain}/audits/{slug}/index.html"
+    dashboard_url: str = f"{domain}/audits/{slug}/latest/index.html"
 
     logger.info("Running audit command: %s", " ".join(command))
+    logger.info("Output directory: %s", run_dir)
 
     try:
         completed = subprocess.run(
@@ -73,6 +113,7 @@ def run_audit(job: dict[str, Any]) -> AuditResult:
         )
 
         if completed.returncode == 0:
+            _update_latest_symlink(slug, date_stamp)
             logger.info("Audit for '%s' finished successfully.", slug)
             return AuditResult(
                 success=True,

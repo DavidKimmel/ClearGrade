@@ -50,6 +50,7 @@ AI-powered marketing audit service for small businesses. A business owner submit
 
 ```
 cleargrade/
+├── run_audit.py         CLI entry point — run an audit for any business
 ├── public/              Static landing page (served by Nginx)
 │   ├── index.html       Landing page with intake form
 │   ├── css/styles.css   Styles
@@ -65,15 +66,76 @@ cleargrade/
 │   └── audit_runner.py  Claude Code CLI wrapper
 ├── templates/           Jinja2 email templates
 ├── deploy/              Nginx + systemd configs
-└── audits/              Generated dashboards (one subdir per business)
+└── audits/              Generated reports (one dir per business, timestamped runs)
+    └── <slug>/
+        ├── latest/      Symlink to most recent successful run
+        └── YYYY-MM-DD/  Individual run with full report set
 ```
+
+## Quick Start — Running an Audit
+
+The fastest way to run a marketing audit for a business:
+
+```bash
+python run_audit.py "Business Name" "https://their-website.com" "industry"
+```
+
+### Examples
+
+```bash
+# Full automated audit
+python run_audit.py "Resurgent Sports Rehab" "https://resurgentsports.com" "physical therapy"
+
+# Setup only — creates the directory, then you run Claude interactively
+python run_audit.py "Joe's Plumbing" "https://joesplumbing.com" "plumber" --setup-only
+cd audits/joes-plumbing/2026-03-29
+claude
+
+# Re-run without re-copying the toolkit
+python run_audit.py "Resurgent Sports Rehab" "https://resurgentsports.com" "physical therapy" --skip-toolkit
+```
+
+### What `run_audit.py` does
+
+1. Creates `audits/<slug>/<date>/` (e.g. `audits/resurgent-sports-rehab/2026-03-29/`)
+2. Copies the `ai-marketing-claude` toolkit (agents, skills, scripts) into that directory
+3. Writes a `CLAUDE.md` with the business name, URL, and industry
+4. Launches Claude Code to run the full audit suite (`/market audit`)
+5. On success, sets a `latest` symlink so the most recent report is always at `audits/<slug>/latest/`
+
+### Output structure
+
+```
+audits/
+├── resurgent-sports-rehab/
+│   ├── latest/              -> 2026-03-29 (symlink)
+│   ├── 2026-03-15/          Previous run preserved
+│   └── 2026-03-29/
+│       ├── CLAUDE.md
+│       ├── ai-marketing-claude/
+│       ├── report_data.json
+│       ├── MARKETING-AUDIT.html
+│       ├── SEO-AUDIT.html
+│       └── COMPETITOR-REPORT.html
+└── joes-plumbing/
+    ├── latest/              -> 2026-03-29
+    └── 2026-03-29/
+```
+
+### Tips
+
+- Use `--setup-only` when you want to steer the audit interactively (recommended while dialing in prompts)
+- Re-running on the same day overwrites that day's output; previous days are preserved
+- The `latest` symlink only updates on a successful run, so a failed re-run won't break the previous good report
+- Reports are self-contained HTML files — open directly in a browser or host on GitHub Pages
 
 ## Local Development Setup
 
 ### Prerequisites
 
 - Python 3.12+
-- A Resend account and API key
+- Claude Code CLI installed and authenticated
+- A Resend account and API key (for email delivery)
 
 ### Install
 
@@ -97,11 +159,15 @@ cp .env.example .env
 ### Run Locally
 
 ```bash
+# Run an audit (the main workflow)
+python run_audit.py "Business Name" "https://example.com" "industry"
+
+# Or start the full web stack:
 # Terminal 1: Flask API
 source .venv/bin/activate
 python -m app.server
 
-# Terminal 2: Worker (optional, for processing audits)
+# Terminal 2: Worker (optional, for processing audits via the web form)
 source .venv/bin/activate
 python -m worker.worker
 ```
