@@ -1,0 +1,7 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "cleargrade"
+compatibility_date = "2025-04-01"
+
+# Serve static files from the public/ directory — no Worker script needed
+[assets]
+directory = "./public"
