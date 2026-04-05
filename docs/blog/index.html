@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — ClearGrade | Marketing Tips for Small Businesses</title>
+  <meta name="description" content="Actionable marketing tips, SEO guides, and growth strategies for small businesses. Written by the team behind ClearGrade's AI-powered marketing audits.">
+
+  <meta property="og:title" content="ClearGrade Blog — Marketing Tips for Small Businesses">
+  <meta property="og:description" content="Actionable marketing tips, SEO guides, and growth strategies for small businesses.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cleargradeai.com/blog/">
+  <meta property="og:image" content="https://cleargradeai.com/assets/og-preview.png">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/blog/blog.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav scrolled">
+    <div class="container">
+      <a href="/" class="nav-logo">Clear<span>Grade</span></a>
+      <div class="nav-links">
+        <a href="/#how">How It Works</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/#tools">Tools</a>
+        <a href="/#form-section" class="nav-btn">Get Your Free Grade</a>
+      </div>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="mob-menu">
+    <a href="/#how">How It Works</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/#tools">Tools</a>
+    <a href="/#form-section" class="nav-btn">Get Your Free Grade</a>
+  </div>
+
+  <!-- BLOG HEADER -->
+  <section class="blog-header">
+    <div class="container">
+      <p class="overline">Blog</p>
+      <h1 class="sh">Marketing tips for small businesses.</h1>
+      <p class="sd" style="margin:0 auto;">Actionable guides, SEO strategies, and growth tactics — written for business owners, not marketers.</p>
+    </div>
+  </section>
+
+  <!-- BLOG GRID -->
+  <section class="blog-listing">
+    <div class="container">
+
+      <!-- POSTS GO HERE — copy this block for each new post -->
+      <!--
+      <a href="/blog/your-post-slug.html" class="blog-card">
+        <div class="blog-card-content">
+          <div class="blog-card-meta">
+            <span class="blog-tag">SEO</span>
+            <span class="blog-date">Apr 2026</span>
+          </div>
+          <h2>Your Post Title Goes Here</h2>
+          <p>A 1-2 sentence preview of what this post covers. Keep it compelling and specific.</p>
+          <span class="blog-read">Read article &rarr;</span>
+        </div>
+      </a>
+      -->
+
+      <!-- EMPTY STATE — remove this when you add your first post -->
+      <div class="blog-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" width="48" height="48"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <h2>Coming soon.</h2>
+        <p>We're writing actionable marketing guides for small businesses. Check back soon.</p>
+        <a href="/#form-section" class="btn" style="margin-top:16px;">Get Your Free Grade &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BLOG CTA -->
+  <section class="blog-cta">
+    <div class="container" style="text-align:center;">
+      <h2 class="sh">Want to know your marketing score?</h2>
+      <p class="sd" style="margin:0 auto 24px;">Get a free marketing grade with your top 3 quick wins — in 60 seconds.</p>
+      <a href="/#form-section" class="btn">Get Your Free Grade &rarr;</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-l">
+          <div class="footer-copy">&copy; 2026 ClearGrade</div>
+          <div class="footer-tagline">AI-powered marketing audits for small businesses.</div>
+        </div>
+        <div class="footer-r">
+          <div class="footer-links">
+            <a href="/privacy.html">Privacy Policy</a>
+            <span>&middot;</span>
+            <a href="mailto:david@cleargradeai.com">david@cleargradeai.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    (function () {
+      var ham = document.querySelector('.hamburger');
+      var mob = document.querySelector('.mob-menu');
+      if (ham && mob) {
+        ham.addEventListener('click', function () { ham.classList.toggle('open'); mob.classList.toggle('open'); });
+        mob.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', function () { ham.classList.remove('open'); mob.classList.remove('open'); });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
