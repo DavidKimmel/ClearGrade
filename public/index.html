@@ -18,7 +18,8 @@
   <meta name="twitter:title" content="ClearGrade — Free AI-Powered Marketing Audit">
   <meta name="twitter:description" content="Find out what's working, what's broken, and what to fix first. Get a comprehensive marketing audit with scoring, competitor analysis, and a prioritized action plan — delivered in 24 hours.">
 
-  <link rel="icon" href="/favicon.ico" type="image/x-icon"> <!-- TODO: Add actual favicon file -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -439,20 +440,33 @@
   <section class="form-sect" id="form-section">
     <div class="container" style="text-align:center;">
       <h2 class="sh anim" style="font-family:var(--sans);font-weight:700;font-style:normal;">Ready to see yours?</h2>
-      <p class="sd anim" style="margin:0 auto;">Takes 30 seconds. You'll have your report within 24 hours.</p>
+      <p class="sd anim" style="margin:0 auto;">Choose your plan and get started.</p>
       <div class="form-wrap anim">
-        <div class="form-card">
+        <div class="form-card" id="form-card" data-tier="free">
+          <!-- Tier toggle -->
+          <div class="tier-toggle">
+            <button class="tier-btn active" data-tier="free" type="button">
+              <span class="tier-label">Free Grade</span>
+              <span class="tier-price">$0</span>
+            </button>
+            <button class="tier-btn" data-tier="paid" type="button">
+              <span class="tier-label">Full Audit</span>
+              <span class="tier-price">$199</span>
+            </button>
+          </div>
+          <p class="tier-desc" id="tier-desc">Score + 3 quick wins delivered to your inbox.</p>
           <form id="audit-form" novalidate>
-            <div class="fg"><label for="business_name">Business Name</label><input type="text" id="business_name" name="business_name" placeholder="e.g. Summit Physical Therapy" required><div class="f-err"></div></div>
             <div class="fg"><label for="website_url">Website URL</label><input type="url" id="website_url" name="website_url" placeholder="e.g. summitpt.com" required><div class="f-err"></div></div>
-            <div class="fg"><label for="industry">Industry / Niche</label><input type="text" id="industry" name="industry" placeholder="e.g. Physical Therapy, Dental, Plumbing" required><div class="f-err"></div></div>
-            <div class="fg"><label for="contact_name">Your Name</label><input type="text" id="contact_name" name="contact_name" placeholder="e.g. Sarah Mitchell" required><div class="f-err"></div></div>
             <div class="fg"><label for="email">Email Address</label><input type="email" id="email" name="email" placeholder="e.g. sarah@summitpt.com" required><div class="f-err"></div></div>
+            <div class="fg paid-only"><label for="business_name">Business Name</label><input type="text" id="business_name" name="business_name" placeholder="e.g. Summit Physical Therapy"><div class="f-err"></div></div>
+            <div class="fg paid-only"><label for="industry">Industry / Niche</label><input type="text" id="industry" name="industry" placeholder="e.g. Physical Therapy, Dental, Plumbing"><div class="f-err"></div></div>
+            <div class="fg paid-only"><label for="contact_name">Your Name</label><input type="text" id="contact_name" name="contact_name" placeholder="e.g. Sarah Mitchell"><div class="f-err"></div></div>
             <!-- Honeypot — hidden from users, visible to bots -->
             <div class="honey" aria-hidden="true"><input type="text" name="company_url" tabindex="-1" autocomplete="off"></div>
-            <button type="submit" class="f-btn">Run My Audit &rarr;</button>
+            <input type="hidden" name="tier" id="tier-input" value="free">
+            <button type="submit" class="f-btn" id="f-btn">Get My Free Grade &rarr;</button>
           </form>
-          <p class="f-note">No credit card required. No sales call. Just your report.</p>
+          <p class="f-note" id="f-note">No credit card required. No sales call. Just your score.</p>
           <div class="f-ok">
             <div class="f-ok-check"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <h3>You're in!</h3>

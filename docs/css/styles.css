@@ -919,6 +919,38 @@ section { position: relative; z-index: 1; }
   background: radial-gradient(ellipse, rgba(56, 189, 248, 0.05) 0%, transparent 70%);
   pointer-events: none;
 }
+/* Tier toggle */
+.tier-toggle {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; margin-bottom: 20px;
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+.tier-btn {
+  padding: 14px 16px; border: none;
+  background: transparent; color: var(--text-dim);
+  font-family: var(--sans); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  transition: background .2s, color .2s;
+}
+.tier-btn.active {
+  background: var(--accent-glow);
+  color: var(--text);
+}
+.tier-btn:hover:not(.active) { background: rgba(255,255,255,0.03); }
+.tier-label { font-size: .82rem; font-weight: 600; }
+.tier-price { font-size: 1.2rem; font-weight: 800; }
+.tier-btn.active .tier-price { color: var(--accent); }
+.tier-btn[data-tier="paid"].active .tier-price { color: var(--cta); }
+.tier-desc {
+  font-size: .88rem; color: var(--text-dim); margin-bottom: 24px;
+  line-height: 1.5;
+}
+/* Hide paid-only fields when free tier is selected */
+.form-card[data-tier="free"] .paid-only { display: none; }
+.form-card[data-tier="paid"] .paid-only { display: block; }
+
 .form-wrap { max-width: 560px; margin: 32px auto 0; }
 .form-card {
   padding: 40px 36px; border-radius: 16px;

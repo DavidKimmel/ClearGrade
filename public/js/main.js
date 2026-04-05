@@ -189,6 +189,49 @@
   }
 
   /* --- Form --- */
+  /* --- Tier Toggle --- */
+  function initTierToggle() {
+    var card = document.getElementById('form-card');
+    var btns = document.querySelectorAll('.tier-btn');
+    var desc = document.getElementById('tier-desc');
+    var tierInput = document.getElementById('tier-input');
+    var submitBtn = document.getElementById('f-btn');
+    var note = document.getElementById('f-note');
+    if (!card || !btns.length) return;
+
+    var descs = {
+      free: 'Score + 3 quick wins delivered to your inbox.',
+      paid: '6-dimension audit, SEO, competitors, and PDF report.'
+    };
+    var btnText = {
+      free: 'Get My Free Grade \u2192',
+      paid: 'Get My Full Audit \u2014 $199 \u2192'
+    };
+    var noteText = {
+      free: 'No credit card required. No sales call. Just your score.',
+      paid: 'Payment link will be sent to your email after submission.'
+    };
+
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var tier = btn.getAttribute('data-tier');
+        btns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        card.setAttribute('data-tier', tier);
+        if (tierInput) tierInput.value = tier;
+        if (desc) desc.textContent = descs[tier];
+        if (submitBtn) submitBtn.textContent = btnText[tier];
+        if (note) note.textContent = noteText[tier];
+        // Make paid-only fields required when paid tier selected
+        var paidFields = card.querySelectorAll('.paid-only input');
+        paidFields.forEach(function (f) {
+          if (tier === 'paid') f.setAttribute('required', '');
+          else f.removeAttribute('required');
+        });
+      });
+    });
+  }
+
   function initForm() {
     var form = document.getElementById('audit-form'); if (!form) return;
     // Pre-fill URL from hero input
@@ -199,12 +242,14 @@
         if (urlInput && !urlInput.value) urlInput.value = saved;
       }
     } catch (ex) { /* private browsing */ }
+    var card = document.getElementById('form-card');
+    var currentTier = function () { return card ? card.getAttribute('data-tier') : 'free'; };
     var spec = {
-      business_name: { r: true, l: 'Business name' },
       website_url: { r: true, t: 'url', l: 'Website URL' },
-      industry: { r: true, l: 'Industry' },
-      contact_name: { r: true, l: 'Your name' },
-      email: { r: true, t: 'email', l: 'Email' }
+      email: { r: true, t: 'email', l: 'Email' },
+      business_name: { r: false, l: 'Business name', paid: true },
+      industry: { r: false, l: 'Industry', paid: true },
+      contact_name: { r: false, l: 'Your name', paid: true }
     };
     function err(n, m) {
       var inp = form.querySelector('[name="' + n + '"]');
@@ -218,7 +263,9 @@
     }
     function vf(n, v) {
       var s = spec[n]; if (!s) return null; var val = v.trim();
-      if (s.r && !val) return s.l + ' is required';
+      var isPaid = currentTier() === 'paid';
+      var isRequired = s.r || (s.paid && isPaid);
+      if (isRequired && !val) return s.l + ' is required';
       if (s.t === 'email' && val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) return 'Enter a valid email';
       if (s.t === 'url' && val) { try { new URL(val.match(/^https?:\/\//) ? val : 'https://' + val); } catch (e) { return 'Enter a valid URL'; } }
       return null;
@@ -334,6 +381,7 @@
     initSteps();
     initPreview();
     initFaq();
+    initTierToggle();
     initForm();
     initSticky();
   });
