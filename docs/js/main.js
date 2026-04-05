@@ -191,6 +191,14 @@
   /* --- Form --- */
   function initForm() {
     var form = document.getElementById('audit-form'); if (!form) return;
+    // Pre-fill URL from hero input
+    try {
+      var saved = sessionStorage.getItem('cg_url');
+      if (saved) {
+        var urlInput = form.querySelector('[name="website_url"]');
+        if (urlInput && !urlInput.value) urlInput.value = saved;
+      }
+    } catch (ex) { /* private browsing */ }
     var spec = {
       business_name: { r: true, l: 'Business name' },
       website_url: { r: true, t: 'url', l: 'Website URL' },
@@ -273,9 +281,23 @@
     });
   }
 
-  /* --- Hero Video: pre-built ping-pong, just loop natively --- */
-  function initHeroVideo() {
-    // Video is already a forward+reverse ping-pong with loop attribute
+  /* --- Hero URL Form --- */
+  function initHeroUrl() {
+    var form = document.getElementById('hero-url-form');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var url = document.getElementById('hero-url').value.trim();
+      if (!url) return;
+      // Store URL for pre-fill
+      try { sessionStorage.setItem('cg_url', url); } catch (ex) { /* private browsing */ }
+      // Pre-fill the main form
+      var mainUrl = document.getElementById('website_url');
+      if (mainUrl) mainUrl.value = url;
+      // Scroll to form
+      var formSection = document.getElementById('form-section');
+      if (formSection) formSection.scrollIntoView({ behavior: 'smooth' });
+    });
   }
 
   /* --- Steps progression animation --- */
@@ -308,7 +330,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     initAnim();
     initNav();
-    initHeroVideo();
+    initHeroUrl();
     initSteps();
     initPreview();
     initFaq();

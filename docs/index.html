@@ -29,35 +29,37 @@
       <a href="#hero" class="nav-logo">Clear<span>Grade</span></a>
       <div class="nav-links">
         <a href="#how">How It Works</a>
-        <a href="#preview">Sample Report</a>
-        <a href="#form-section" class="nav-btn">Get Your Audit</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#tools">Tools</a>
+        <a href="#form-section" class="nav-btn">Get Your Free Grade</a>
       </div>
       <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
   <div class="mob-menu">
     <a href="#how">How It Works</a>
-    <a href="#preview">Sample Report</a>
-    <a href="#form-section" class="nav-btn">Get Your Audit</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#tools">Tools</a>
+    <a href="#form-section" class="nav-btn">Get Your Free Grade</a>
   </div>
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="hero-video-wrap">
-      <video id="hero-vid" class="hero-vid active" autoplay muted loop playsinline>
-        <source src="assets/hero-pingpong.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="hero-overlay"></div>
     <div class="container">
       <div class="hero-content">
-        <p class="overline">Free AI-Powered Marketing Audit</p>
-        <h1>Find out what's working, what's broken, and <em>what to fix first.</em></h1>
-        <p class="hero-sub">Submit your website and get a comprehensive marketing audit with scoring, competitor analysis, and a prioritized action plan — delivered in 24 hours.</p>
+        <p class="overline">Free AI-Powered Marketing Platform</p>
+        <h1>Stop guessing.<br><em>Start growing.</em></h1>
+        <p class="hero-sub">Get your marketing score, top quick wins, and a clear action plan — in 60 seconds.</p>
         <div class="hero-cta">
-          <a href="#form-section" class="btn">Get Your Free Audit &rarr;</a>
-          <div class="hero-badge" aria-label="Fast delivery">&#9889; Report delivered within 24 hours</div>
-          <p class="hero-trust">No credit card. No sales call. Just your report.</p>
+          <form class="hero-url-form" id="hero-url-form">
+            <input type="url" id="hero-url" placeholder="Enter your website URL..." required>
+            <button type="submit">Get My Free Grade</button>
+          </form>
+          <p class="hero-trust">No credit card. No sales call. Just your score.</p>
+          <div class="hero-badges">
+            <span><span class="check">&#10003;</span> 50+ audits delivered</span>
+            <span><span class="check">&#10003;</span> Results in 60 seconds</span>
+          </div>
         </div>
       </div>
     </div>
@@ -66,8 +68,7 @@
   <!-- SOCIAL PROOF -->
   <div class="proof-bar">
     <div class="container">
-      <!-- TODO: Update audit count as it grows -->
-      <p><span class="proof-count">50+</span> audits delivered across <strong>healthcare</strong>, <strong>food &amp; beverage</strong>, <strong>professional services</strong>, and more.</p>
+      <p><span class="proof-count">50+</span> audits delivered &middot; Score + action plan in 60 seconds &middot; No credit card required</p>
     </div>
   </div>
 
@@ -195,6 +196,95 @@
             <div class="card-stat-item"><span class="card-stat-val">Print</span><span class="card-stat-label">Ready</span></div>
           </div>
           <span class="card-example-label">Example from a recent audit</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING COMPARISON -->
+  <section class="pricing" id="pricing">
+    <div class="container" style="text-align:center;">
+      <p class="overline anim">Pricing</p>
+      <h2 class="sh anim">Agency-quality audit. Small-business price.</h2>
+      <div class="price-grid anim">
+        <div class="price-col muted">
+          <h3>Typical Agency</h3>
+          <div class="price-amount">$3,000&ndash;$5,000</div>
+          <ul class="price-list">
+            <li><svg class="icon-no" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> 2&ndash;4 week turnaround</li>
+            <li><svg class="icon-no" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Sales call required</li>
+            <li><svg class="icon-no" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Generic template report</li>
+            <li><svg class="icon-no" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Ongoing retainer commitment</li>
+          </ul>
+        </div>
+        <div class="price-col highlight">
+          <h3>ClearGrade</h3>
+          <div class="price-amount"><span class="strike">$3,000</span> $199</div>
+          <ul class="price-list">
+            <li><svg class="icon-yes" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Delivered in 24 hours</li>
+            <li><svg class="icon-yes" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> No sales call needed</li>
+            <li><svg class="icon-yes" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> AI-personalized to your business</li>
+            <li><svg class="icon-yes" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> One-time purchase, yours forever</li>
+          </ul>
+        </div>
+      </div>
+      <div class="price-footer anim">
+        <p>Or start free &mdash; score + 3 quick wins, no credit card.</p>
+        <a href="#form-section" class="btn">Get Your Free Grade &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT SUITE / TOOLS -->
+  <section class="tools" id="tools">
+    <div class="container" style="text-align:center;">
+      <p class="overline anim">The Platform</p>
+      <h2 class="sh anim">The audit is just the beginning.</h2>
+      <p class="sd anim" style="margin:0 auto;">ClearGrade is building a complete marketing toolkit for small businesses.</p>
+      <div class="tools-grid anim">
+        <div class="tool-card">
+          <div class="tool-card-header">
+            <div class="tool-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <span class="status-badge status-live"><span class="status-dot"></span> Live</span>
+          </div>
+          <h3>Free Grade</h3>
+          <p>Score + 3 quick wins in 60 seconds. See exactly where your marketing stands.</p>
+          <div class="tool-price">FREE</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-header">
+            <div class="tool-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+            </div>
+            <span class="status-badge status-live"><span class="status-dot"></span> Live</span>
+          </div>
+          <h3>Full Audit</h3>
+          <p>6-dimension audit, SEO analysis, competitor intelligence, and PDF executive report.</p>
+          <div class="tool-price">$199</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-header">
+            <div class="tool-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </div>
+            <span class="status-badge status-beta">Beta</span>
+          </div>
+          <h3>Content Tools</h3>
+          <p>Blog posts, social content, and email sequences generated for your business.</p>
+          <div class="tool-price">Coming soon</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-header">
+            <div class="tool-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <span class="status-badge status-soon">Coming Soon</span>
+          </div>
+          <h3>Website Fixes</h3>
+          <p>Meta optimization, SEO fixes, and implementation based on your audit results.</p>
+          <div class="tool-price">Coming soon</div>
         </div>
       </div>
     </div>
@@ -402,7 +492,7 @@
   </footer>
 
   <!-- STICKY CTA -->
-  <div class="sticky" id="sticky"><a href="#form-section">Get Your Free Audit &rarr;</a></div>
+  <div class="sticky" id="sticky"><a href="#form-section">Get Your Free Grade &rarr;</a></div>
 
   <script src="js/main.js"></script>
 </body>
